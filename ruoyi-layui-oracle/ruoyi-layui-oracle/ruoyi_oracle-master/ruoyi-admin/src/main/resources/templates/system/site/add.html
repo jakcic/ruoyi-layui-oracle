@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <head>
+        <th:block th:include="include :: header('站点新增')" />
+    </head>
+</head>
+<body>
+<div class="container">
+    <form class="layui-form mt20" lay-filter="form-site">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>站点名称：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="siteName" lay-verify="required" lay-verType="tips" placeholder="" autocomplete="off" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">站点描述：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="siteDesc" placeholder="" autocomplete="off" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>站点地址：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="siteUrl" lay-verify="required" lay-verType="tips" placeholder="" autocomplete="off" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>站点图标：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="siteImg" lay-verify="required" lay-verType="tips" placeholder="" autocomplete="off" />
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>站点类型：</label>
+            <div class="layui-input-block">
+<!--                <input class="layui-input min-input" type="text" name="siteType" lay-verify="required" lay-verType="tips" placeholder="" autocomplete="off" />-->
+                <span th:each="dict : ${@dict.getType('sys_site_type')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="siteType" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" />
+                </span>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>显示顺序：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="siteSort" lay-verify="required|number" lay-verType="tips" laceholder="" autocomplete="off" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">站点状态：</label>
+            <div class="layui-input-block">
+                <span th:each="dict : ${@dict.getType('sys_site_status')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" />
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="btn-add" id="btn-add">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<script th:src="@{/js/system/site_form.js}"></script>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:site:edit')}]];
+</script>
+</body>
+</html>

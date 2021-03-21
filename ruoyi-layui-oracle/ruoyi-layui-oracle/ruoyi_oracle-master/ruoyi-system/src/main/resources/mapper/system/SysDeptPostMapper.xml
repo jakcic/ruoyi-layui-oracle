@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysDeptPostMapper">
+
+    <resultMap type="SysDeptPost" id="SysDeptPostResult">
+        <result property="upId"    column="up_id"    />
+        <result property="postId"    column="post_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectSysDeptPostVo">
+        select up_id, post_id, dept_id from sys_dept_post
+    </sql>
+
+    <select id="selectSysDeptPostList" parameterType="SysDeptPost" resultMap="SysDeptPostResult">
+        <include refid="selectSysDeptPostVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectSysDeptPostById" parameterType="Long" resultMap="SysDeptPostResult">
+        <include refid="selectSysDeptPostVo"/>
+        where up_id = #{upId}
+    </select>
+
+    <insert id="insertSysDeptPost" parameterType="SysDeptPost">
+        <selectKey keyProperty="upId" resultType="long" order="BEFORE">
+            SELECT seq_sys_dept_post.NEXTVAL as upId FROM DUAL
+        </selectKey>
+        insert into sys_dept_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="upId != null">up_id,</if>
+            <if test="postId != null">post_id,</if>
+            <if test="deptId != null">dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="upId != null">#{upId},</if>
+            <if test="postId != null">#{postId},</if>
+            <if test="deptId != null">#{deptId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysDeptPost" parameterType="SysDeptPost">
+        update sys_dept_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="postId != null">post_id = #{postId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where up_id = #{upId}
+    </update>
+
+    <delete id="deleteSysDeptPostById" parameterType="Long">
+        delete from sys_dept_post where up_id = #{upId}
+    </delete>
+
+    <delete id="deleteSysDeptPostByIds" parameterType="String">
+        delete from sys_dept_post where up_id in
+        <foreach item="upId" collection="array" open="(" separator="," close=")">
+            #{upId}
+        </foreach>
+    </delete>
+
+    <select id="findpostIdByupId" parameterType="Long" resultType="Long">
+        SELECT POST_ID FROM SYS_DEPT_POST WHERE UP_ID = #{upId}
+    </select>
+
+    <select id="findroleIdBypostId" parameterType="Long" resultType="Long">
+        SELECT ROLE_ID FROM SYS_ROLE_POST WHERE POST_ID = #{postId}
+    </select>
+</mapper>

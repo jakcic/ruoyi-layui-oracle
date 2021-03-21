@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysUserUpMapper">
+
+    <resultMap type="SysUserUp" id="SysUserUpResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="upId"    column="up_id"    />
+    </resultMap>
+
+    <sql id="selectSysUserUpVo">
+        select id, user_id, up_id from sys_user_up
+    </sql>
+
+    <select id="selectSysUserUpList" parameterType="SysUserUp" resultMap="SysUserUpResult">
+        <include refid="selectSysUserUpVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectSysUserUpById" parameterType="Long" resultMap="SysUserUpResult">
+        <include refid="selectSysUserUpVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysUserUp" parameterType="SysUserUp">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT seq_sys_user_up.NEXTVAL as id FROM DUAL
+        </selectKey>
+        insert into sys_user_up
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="upId != null">up_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="upId != null">#{upId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysUserUp" parameterType="SysUserUp">
+        update sys_user_up
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="upId != null">up_id = #{upId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysUserUpById" parameterType="Long">
+        delete from sys_user_up where id = #{id}
+    </delete>
+
+    <delete id="deleteSysUserUpByIds" parameterType="String">
+        delete from sys_user_up where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findupIdByUserId" parameterType="Long" resultType="Long">
+        SELECT UP_ID FROM SYS_USER_UP WHERE USER_ID = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('部门修改')" />
+    <style>
+        .deptName{
+            max-height: 200px;
+            width: 92%;
+            display: none;
+            position: absolute;
+            top:100%;
+            z-index: 100;
+            border-top: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form class="layui-form mt20" lay-filter="form-dept" th:object="${dept}">
+        <input name="parentId" type="hidden" th:field="*{parentId}" />
+        <input name="deptId" type="hidden" th:field="*{deptId}" />
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>上级部门：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input readonly" type="text" id="treeName" lay-verify="required" lay-verType="tips" readonly autocomplete="off" th:field="*{parentName}">
+                <div class="eleTree deptName" lay-filter="deptNameTree"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>部门名称：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="deptName" lay-verify="required" lay-verType="tips" placeholder="" autocomplete="off" th:field="*{deptName}"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="required-msg ">*</span>显示排序：</label>
+            <div class="layui-input-block">
+                <input  class="layui-input min-input" type="text" name="orderNum" lay-verify="required|number" lay-verType="tips" placeholder="" autocomplete="off" th:field="*{orderNum}"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">负责人：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="leader" placeholder="" autocomplete="off" th:field="*{leader}"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系电话：</label>
+            <div class="layui-input-block">
+                <input class="layui-input min-input" type="text" name="phone" placeholder="" autocomplete="off" th:field="*{phone}"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门状态：</label>
+            <div class="layui-input-block">
+                <span th:each="dict : ${@dict.getType('sys_normal_disable')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" th:field="*{status}" />
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门类型：</label>
+            <div class="layui-input-block">
+<!--                <input class="layui-input min-input" type="text" name="deptType" placeholder="" autocomplete="off" th:field="*{deptType}"/>-->
+                <span th:each="dict : ${@dict.getType('sys_dept_type')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="deptType" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" th:field="*{deptType}" />
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门等级：</label>
+            <div class="layui-input-block">
+<!--                <input class="layui-input min-input" type="text" name="deptLevle" placeholder="" autocomplete="off" th:field="*{deptLevel}"/>-->
+                <span th:each="dict : ${@dict.getType('sys_dept_level')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="deptLevel" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" th:field="*{deptLevel}" />
+                </span>
+            </div>
+        </div>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label">岗位：</label>-->
+<!--            <div class="layui-input-block" id="post">-->
+<!--                &lt;!&ndash;                <input type="checkbox" title="写作">&ndash;&gt;-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">岗位：</label>
+            <div class="layui-input-block">
+                <select name="post" xm-select="post" id="post">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-hide">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="btn-edit" id="btn-edit">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<link rel="stylesheet" th:href="@{/js/extendModules/formSelects/formSelects-v4.css}">
+<script type="text/javascript" th:src="@{/js/extendModules/formSelects/formSelects-v4.js}"></script>
+<script th:src="@{/js/system/dept_form.js}"></script>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:dept:edit')}]];
+</script>
+<script>
+    layui.config({
+        base: '/js/extendModules/formSelects/'
+    }).extend({
+        formSelects: 'formSelects-v4'
+    });
+layui.use('form',function () {
+    var form=layui.form;
+    // $.ajax({
+    //     url:'/system/post/listPost',
+    //     dataType: 'json',
+    //     type:'get',
+    //     success:function (data) {
+    //         let str="<input type='checkbox' title='角色'>";
+    //         for(let i of data){
+    //             str+=`<input type="checkbox" title='${i.postName}'>`;
+    //         }
+    //         $("#post").html(str);
+    //         form.render();
+    //     }
+    // })
+    var formSelects = layui.formSelects;
+    var $=layui.jquery;
+    $.ajax({
+        url: '/system/post/listPost',
+        dataType: 'json',
+        type: 'get',
+        cache: false,
+        success: function (data) {
+            var keys = [];
+            for (var i = 0; i < data.length; i++) {
+                var temp = {
+                    "name": data[i].postName,
+                    "value": data[i].postId,
+                }
+                keys.push(temp);
+                console.log(keys);
+            }
+            formSelects.data("post", "local", {
+                arr: keys
+            });
+        }
+    })
+})
+</script>
+</body>
+</html>

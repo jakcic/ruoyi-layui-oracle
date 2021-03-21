@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="include :: header('岗位新增')"/>
+</head>
+<body>
+<div class="container">
+  <form class="layui-form mt20" lay-filter="form-post">
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required-msg ">*</span>岗位名称：</label>
+      <div class="layui-input-block">
+        <input class="layui-input min-input" type="text" name="postName" lay-verify="required" lay-verType="tips"
+               placeholder="" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required-msg ">*</span>岗位编码：</label>
+      <div class="layui-input-block">
+        <input class="layui-input min-input" type="text" name="postCode" lay-verify="required" lay-verType="tips"
+               placeholder="" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">站点ID：</label>
+      <div class="layui-input-block">
+        <input class="layui-input min-input" type="text" name="siteId" placeholder="" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"><span class="required-msg ">*</span>显示顺序：</label>
+      <div class="layui-input-block">
+        <input class="layui-input min-input" type="number" name="postSort" lay-verify="required|number"
+               lay-verType="tips" placeholder="" autocomplete="off"/>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">岗位状态：</label>
+      <div class="layui-input-block">
+                <span th:each="dict : ${@dict.getType('sys_normal_disable')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}"
+                           th:title="${dict.dictLabel}" th:checked="${dict.isDefault == 'Y' ? true : false}"/>
+                </span>
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="btn-add" id="btn-add">保存</button>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">站点：</label>
+      <div class="layui-input-block">
+        <select name="siteType" id="site">
+          <option value="">全部站点</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">添加角色：</label>
+      <div class="layui-input-block">
+        <select name="post" xm-select="post" id="post">
+          <option value="">请选择角色</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+<th:block th:include="include :: footer"/>
+<link rel="stylesheet" th:href="@{/js/extendModules/formSelects/formSelects-v4.css}">
+<script type="text/javascript" th:src="@{/js/extendModules/formSelects/formSelects-v4.js}"></script>
+<script th:src="@{/js/system/post_form.js}"></script>
+<script th:inline="javascript">
+  var editFlag = [[${@permission.hasPermi('system:post:edit')}]];
+</script>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script>
+  layui.config({
+    base: '/js/extendModules/formSelects/'
+  }).extend({
+    formSelects: 'formSelects-v4'
+  });
+  layui.use(['jquery', 'form', 'formSelects'], function () {
+    var form = layui.form;
+    var formSelects = layui.formSelects;
+    var $=layui.jquery;
+    $.ajax({
+        url: '/system/post/listPost',
+        dataType: 'json',
+        type: 'get',
+        cache: false,
+        success: function (data) {
+          var keys = [];
+          for (var i = 0; i < data.length; i++) {
+            var temp = {
+              "name": data[i].postName,
+              "value": data[i].postId,
+            }
+            keys.push(temp);
+            console.log(keys);
+          }
+          formSelects.data("post", "local", {
+            arr: keys
+          });
+        }
+    })
+  })
+  $(function () {
+    $.ajax({
+      url: '/system/site/listSite',
+      success: function (da) {
+        $.each(da,function(index,value){
+          var name=da[index]['siteName']
+          var $option=$("<option>"+name+"</option>")
+          $("#site").append($option);
+        })
+        //列表添加完后再次执行渲染
+        xuanranSite();
+      }
+    })
+  })
+  function xuanranSite() {
+    layui.use('form', function () {
+      var form = layui.form;
+      form.render();
+    })
+  }
+</script>
+</body>
+</html>

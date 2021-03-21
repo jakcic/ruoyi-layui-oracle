@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/jakcic-ruoyi-layui-oracle-master.iml" filepath="$PROJECT_DIR$/.idea/jakcic-ruoyi-layui-oracle-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-admin/ruoyi-admin.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-admin/ruoyi-admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-common/ruoyi-common.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-common/ruoyi-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-framework/ruoyi-framework.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-framework/ruoyi-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-generator/ruoyi-generator.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-generator/ruoyi-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-quartz/ruoyi-quartz.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-quartz/ruoyi-quartz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-system/ruoyi-system.iml" filepath="$PROJECT_DIR$/ruoyi-layui-oracle/ruoyi-layui-oracle/ruoyi_oracle-master/ruoyi-system/ruoyi-system.iml" />
+    </modules>
+  </component>
+</project>

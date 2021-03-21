@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysRolePostMapper">
+    
+    <resultMap type="SysRolePost" id="SysRolePostResult">
+        <result property="id"    column="id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="postId"    column="post_id"    />
+    </resultMap>
+
+    <sql id="selectSysRolePostVo">
+        select id, role_id, post_id from sys_role_post
+    </sql>
+
+    <select id="selectSysRolePostList" parameterType="SysRolePost" resultMap="SysRolePostResult">
+        <include refid="selectSysRolePostVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectSysRolePostById" parameterType="Long" resultMap="SysRolePostResult">
+        <include refid="selectSysRolePostVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysRolePost" parameterType="SysRolePost">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT seq_sys_role_post.NEXTVAL as id FROM DUAL
+        </selectKey>
+        insert into sys_role_post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="postId != null">post_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="postId != null">#{postId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysRolePost" parameterType="SysRolePost">
+        update sys_role_post
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="postId != null">post_id = #{postId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysRolePostById" parameterType="Long">
+        delete from sys_role_post where id = #{id}
+    </delete>
+
+    <delete id="deleteSysRolePostByIds" parameterType="String">
+        delete from sys_role_post where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
